@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/weather_nav"
+    app:startDestination="@id/searchWeatherForecastFragment">
+
+    <fragment
+        android:id="@+id/searchWeatherForecastFragment"
+        android:name="com.example.weatherapp.search.SearchWeatherForecastFragment"
+        android:label="@string/search_weather">
+        <action
+            android:id="@+id/action_nav_to_fragment_weather_forecast_detail"
+            app:destination="@id/weatherForecastDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weatherForecastDetailFragment"
+        android:name="com.example.weatherapp.details.WeatherForecastDetailFragment">
+
+        <argument
+            android:name="entity"
+            app:argType="com.example.domain.entity.WeatherForecastEntity" />
+    </fragment>
+</navigation>
