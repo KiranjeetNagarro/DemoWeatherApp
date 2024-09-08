@@ -20,25 +20,29 @@ class WeatherRepository(private val apiService: IApiService, private val db: App
 
     override fun getCityWeatherForecast(cityName: String): Flow<ResponseState<WeatherForecastEntity>> {
         return flow {
-            val dao = db.weatherDao()
-            val cacheData = dao.getApiData(cityName)
-            if (cacheData != null) {
-                val weatherForecastModel =
-                    Gson().fromJson(cacheData.data, WeatherForecastModel::class.java)
-                emit(ResponseState.Success(weatherForecastModel.toWeatherForecastEntity()))
-            } else {
-                val response = apiService.getCityWeatherForecast(cityName, API_KEY, UNITS)
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body == null) {
-                        emit(ResponseState.Success(null))
-                    } else {
-                        dao.insert(ApiData(cityName, Gson().toJson(body)))
-                        emit(ResponseState.Success(body.toWeatherForecastEntity()))
-                    }
+            try {
+                val dao = db.weatherDao()
+                val cacheData = dao.getApiData(cityName)
+                if (cacheData != null) {
+                    val weatherForecastModel =
+                        Gson().fromJson(cacheData.data, WeatherForecastModel::class.java)
+                    emit(ResponseState.Success(weatherForecastModel.toWeatherForecastEntity()))
                 } else {
-                    emit(ResponseState.Error(Entity.Error(response.code(), response.message())))
+                    val response = apiService.getCityWeatherForecast(cityName, API_KEY, UNITS)
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body == null) {
+                            emit(ResponseState.Success(null))
+                        } else {
+                            dao.insert(ApiData(cityName, Gson().toJson(body)))
+                            emit(ResponseState.Success(body.toWeatherForecastEntity()))
+                        }
+                    } else {
+                        emit(ResponseState.Error(Entity.Error(response.code(), response.message())))
+                    }
                 }
+            } catch (exception: Exception) {
+                emit(ResponseState.Error(Entity.Error(1, exception.message.orEmpty())))
             }
         }
     }
