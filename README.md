@@ -10,7 +10,9 @@ This is an Android application that fetches weather data from an API and caches 
 - Displays weather forecast including temperature, humidity, and weather conditions.
 - Unit tests for data and UI layers.
 - Follows MVVM architecture.
-- Follows clean archtecture with data and domain layers
+- Follows clean archtecture with data and domain layers -> It provide separation of concern & ease of scalability, performance, security, code reduction etc.
+- Hilt -> For Dependency Injection.
+- View Binding -> It replaces findViewById making it easier to code that interacts with views. Enable it by added dataBinding = true in build gradle file.
 - Error handling for network issues.
 
 ## Getting Started
@@ -29,6 +31,7 @@ Before you begin, ensure you have met the following requirements:
 3. [Gson](https://github.com/google/gson) - convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object
 4. [Room Database](https://developer.android.com/jetpack/androidx/releases/room) - Database used for cache
 5. [Hilt Dependency](https://developer.android.com/jetpack/androidx/releases/hilt) - To enable dependency injection of certain classes from the androidx libraries.
+6. Navigation -> We used Jetpack Navigation component. Provides a consistent way to manage the Activity/Fragment. Uses visual graph to make the entire process easier, clearer and more consistent.
 
 ### Functionality
 1. Search any city current weather with temperature, humidity, wind speed and weather description
